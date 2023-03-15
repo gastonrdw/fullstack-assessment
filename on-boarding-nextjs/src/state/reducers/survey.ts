@@ -3,14 +3,13 @@ import { ISurvey } from '../../interfaces/survey';
 
 export type State = {
   surveys:{
-    surveys: ISurvey[] | null,
+    surveys: ISurvey[],
     isFetching: boolean;
   };
   draftSurvey: {
     draftSurvey: ISurvey;
     active: boolean;
   }
-  draftSurveyView: ISurvey | null;
   surveyToShow: {
     surveyToShow: ISurvey | null;
     isFetching: boolean;
@@ -20,7 +19,7 @@ export type State = {
 
 export const initialState: State = {
   surveys: {
-    surveys: null,
+    surveys: [],
     isFetching: false,
   },
   draftSurvey: {
@@ -31,7 +30,6 @@ export const initialState: State = {
     },
     active: false,
   },
-  draftSurveyView: null,
   surveyToShow: {
     surveyToShow: null,
     isFetching: false,
@@ -41,14 +39,6 @@ export const initialState: State = {
 
 export function reducer(state: State = initialState, action: RootActions): State {
   switch (action.type) {
-    case 'FETCH_SURVEY_REQUEST':
-      return {
-        ...state,
-        surveys: {
-          ...state.surveys,
-          isFetching: true,
-        },
-      };
     case 'FETCH_SURVEY_SUCCESS':
       return {
         ...state,
@@ -101,8 +91,38 @@ export function reducer(state: State = initialState, action: RootActions): State
       return {
         ...state,
         draftSurvey: {
+          ...state.draftSurvey,
           draftSurvey: {...state.draftSurvey.draftSurvey, [action.payload.type]: action.payload.value},
-          active: true,
+        },
+        error: null
+      };
+    case 'FETCH_CREATE_SURVEY_SUCCESS':
+      return {
+        ...state,
+        surveys: {
+          surveys: [...state.surveys.surveys, state.draftSurvey.draftSurvey],
+          isFetching: false,
+        },
+        draftSurvey: {
+          draftSurvey: {
+            id: '',
+            title: '',
+            description: ''
+          },
+          active: false,
+        },
+        error: null
+      };
+    case 'FETCH_CLEAN_DRAFT_SURVEY_SUCCESS':
+      return {
+        ...state,
+        draftSurvey: {
+          draftSurvey: {
+            id: '',
+            title: '',
+            description: ''
+          },
+          active: false,
         },
         error: null
       };

@@ -1,7 +1,7 @@
 import React from "react";
 import {State} from "@/state/reducers/survey";
 
-const DraftSuverys = ({ draftSurvey, updateSuvery }: {draftSurvey: State["draftSurvey"], updateSuvery: Function }) => {
+const DraftSuverys = ({ draftSurvey, updateSuvery, createSurvey, cleanDraftSurvey }: {draftSurvey: State["draftSurvey"], updateSuvery: Function, createSurvey: Function, cleanDraftSurvey: Function }) => {
   return (
       <div className="w-1/2 flex flex-col shadow">
         <div
@@ -20,6 +20,7 @@ const DraftSuverys = ({ draftSurvey, updateSuvery }: {draftSurvey: State["draftS
                 className="p-2.5 rounded-[4px]"
                 type="text"
                 placeholder="Título"
+                value={draftSurvey.draftSurvey.title}
               />
               <span className="text-[10px] mt-1">Help Text</span>
             </div>
@@ -30,7 +31,8 @@ const DraftSuverys = ({ draftSurvey, updateSuvery }: {draftSurvey: State["draftS
                 onChange={(e) => updateSuvery("description", e.target.value)}
                 className="p-2.5 rounded-[4px]"
                 type="text"
-                placeholder="Título"
+                placeholder="Descripcion"
+                value={draftSurvey.draftSurvey.description}
               />
               <span className="text-[10px] mt-1">Descripción</span>
             </div>
@@ -109,12 +111,21 @@ const DraftSuverys = ({ draftSurvey, updateSuvery }: {draftSurvey: State["draftS
               >
             </button>
             {draftSurvey.active &&
+            <div className="flex items-center gap-x-[12px] mt-4">
+             <button
+              onClick={() => cleanDraftSurvey()}
+              className="bg-red-400 text-white font-semibold py-2 px-3 mt-5 rounded-[8px]"
+            >
+              Descartar borrador
+            </button>
             <button
+              onClick={() => createSurvey()}
               className="bg-purple-400 text-white font-semibold py-2 px-3 mt-5 rounded-[8px]"
             >
               Crear encuesta
-            </button>}
-
+            </button>
+            </div>
+            }
           </div>
         </div>
       </div>

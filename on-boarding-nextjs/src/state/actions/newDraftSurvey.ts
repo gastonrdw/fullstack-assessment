@@ -13,6 +13,16 @@ const fetchUpdateDraftSurveySuccess = (type: string, value: string) =>
     payload: {type, value}
   } as const);
 
+const fetchCreateSurveySuccess = () =>
+  ({
+    type: 'FETCH_CREATE_SURVEY_SUCCESS',
+  } as const);
+
+const fetchCleanDraftSurveySuccess = () =>
+  ({
+    type: 'FETCH_CLEAN_DRAFT_SURVEY_SUCCESS',
+  } as const);
+
 const fetchNewDraftSurveyFailure = (error: any) => {
   return {
     type: 'FETCH_SURVEY_FAILURE',
@@ -36,7 +46,25 @@ export const updateDraftSurvey: any = (type: string, value: string) => async (di
     };
 };
 
+export const createSurvey: any = () => async (dispatch: Dispatch<AnyAction>) => {
+    try {
+        dispatch(fetchCreateSurveySuccess());
+    } catch (error: any) {
+        dispatch(fetchNewDraftSurveyFailure(error));
+    };
+};
+
+export const cleanDraftSurvey: any = () => async (dispatch: Dispatch<AnyAction>) => {
+    try {
+        dispatch(fetchCleanDraftSurveySuccess());
+    } catch (error: any) {
+        dispatch(fetchNewDraftSurveyFailure(error));
+    };
+};
+
 export type Actions =
   | ReturnType<typeof fetchNewDraftSurveySuccess>
   | ReturnType<typeof fetchNewDraftSurveyFailure>
-  | ReturnType<typeof fetchUpdateDraftSurveySuccess>;
+  | ReturnType<typeof fetchUpdateDraftSurveySuccess>
+  | ReturnType<typeof fetchCreateSurveySuccess>
+  | ReturnType<typeof fetchCleanDraftSurveySuccess>;

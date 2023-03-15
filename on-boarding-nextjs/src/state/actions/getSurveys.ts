@@ -2,12 +2,7 @@ import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 import { ISurvey } from '../../interfaces/survey';
 
-const fetchSurveysRequest = () =>
-  ({
-    type: 'FETCH_SURVEY_REQUEST'
-  } as const);
-
-const fetchSurveysSuccess = (payload: ISurvey[] | null) =>
+const fetchSurveysSuccess = (payload: ISurvey[]) =>
   ({
     type: 'FETCH_SURVEY_SUCCESS',
     payload
@@ -24,9 +19,8 @@ const fetchSurveysFailure = (error: any) => {
 
 export const getSurveys: any = () => async (dispatch: Dispatch<AnyAction>) => {
     try {
-        dispatch(fetchSurveysRequest());
         const data: ISurvey[] = [{id: "1",title: "Pedrito", description: "Descripcion del curso"}];
-        dispatch(fetchSurveysSuccess(data.length > 0 ? data : null));
+        dispatch(fetchSurveysSuccess(data));
 
     } catch (error: any) {
         dispatch(fetchSurveysFailure(error));
@@ -34,6 +28,5 @@ export const getSurveys: any = () => async (dispatch: Dispatch<AnyAction>) => {
 };
 
 export type Actions =
-  | ReturnType<typeof fetchSurveysRequest>
   | ReturnType<typeof fetchSurveysSuccess>
   | ReturnType<typeof fetchSurveysFailure>;

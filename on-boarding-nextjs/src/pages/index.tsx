@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from '../state/store';
 import { getSurveys } from '../state/actions/getSurveys';
 import { setSurveyToShow } from '../state/actions/setSurveyToShow';
-import { newDraftSurvey, updateDraftSurvey } from '../state/actions/newDraftSurvey';
+import { newDraftSurvey, updateDraftSurvey, createSurvey as actionCreateSurvey, cleanDraftSurvey as actionCleanDraftSurvey } from '../state/actions/newDraftSurvey';
 import Suverys from '../components/surveys';
 import DraftSuverys from '../components/draftSurvey';
 
@@ -25,6 +25,14 @@ export default function Home() {
 
   const updateSuvery = (type: string, value: string) => {
     dispatch(updateDraftSurvey(type, value));
+  }
+
+  const createSurvey = () => {
+    dispatch(actionCreateSurvey());
+  }
+
+  const cleanDraftSurvey = () => {
+    dispatch(actionCleanDraftSurvey());
   }
 
   const surveys  = useSelector(store => store.Surveys);
@@ -47,7 +55,12 @@ export default function Home() {
       </Head>
       <main>
         <div className="mx-auto flex w-3/4 gap-x-3 py-[100px]">
-        <DraftSuverys draftSurvey={draftSurvey} updateSuvery={updateSuvery} />
+        <DraftSuverys
+          draftSurvey={draftSurvey}
+          updateSuvery={updateSuvery}
+          createSurvey={createSurvey}
+          cleanDraftSurvey={cleanDraftSurvey}
+        />
         <Suverys
           surveys={surveys.surveys?.surveys}
           surveyToShow={surveyToShow}
