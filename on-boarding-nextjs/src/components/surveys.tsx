@@ -3,7 +3,6 @@ import {State} from "@/state/reducers/survey";
 import React from "react";
 
 const Suverys = ({ surveys, surveyToShow, selectSurvey, newSurvey, draftSurvey }: {surveys: ISurvey[] | null, surveyToShow: State["surveyToShow"], selectSurvey: Function, newSurvey: Function, draftSurvey: State["draftSurvey"] }) => {
-  console.log('draftSurvey', draftSurvey);
   return (
       <div className="w-1/2">
         <div
@@ -23,7 +22,7 @@ const Suverys = ({ surveys, surveyToShow, selectSurvey, newSurvey, draftSurvey }
             }
             </span>
 
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <span className="font-semibold text-black"
                 >¿Doloremque tempore aut modi?</span
               >
@@ -73,7 +72,7 @@ const Suverys = ({ surveys, surveyToShow, selectSurvey, newSurvey, draftSurvey }
                   //rows="5"
                 ></textarea>
               </div>
-            </div>
+            </div> */}
 
             <div className="flex items-center gap-x-[12px] mt-4">
               <div className="flex flex-col w-full mb-4">
@@ -95,7 +94,7 @@ const Suverys = ({ surveys, surveyToShow, selectSurvey, newSurvey, draftSurvey }
           </div>
         </div>
       </div>
-  )
+  );
 }
 
 export default Suverys;

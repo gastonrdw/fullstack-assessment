@@ -1,10 +1,10 @@
 import { RootActions } from '../combineActions';
 import { ISurvey } from '../../interfaces/survey';
+import { v4 as uuidv4 } from 'uuid';
 
 export type State = {
   surveys:{
     surveys: ISurvey[],
-    isFetching: boolean;
   };
   draftSurvey: {
     draftSurvey: ISurvey;
@@ -12,7 +12,6 @@ export type State = {
   }
   surveyToShow: {
     surveyToShow: ISurvey | null;
-    isFetching: boolean;
   };
   error: any | null;
 };
@@ -20,40 +19,28 @@ export type State = {
 export const initialState: State = {
   surveys: {
     surveys: [],
-    isFetching: false,
   },
   draftSurvey: {
     draftSurvey: {
       id: '',
       title: '',
-      description: ''
+      description: '',
     },
     active: false,
   },
   surveyToShow: {
     surveyToShow: null,
-    isFetching: false,
   },
   error: null,
 };
 
 export function reducer(state: State = initialState, action: RootActions): State {
   switch (action.type) {
-    case 'FETCH_SURVEY_SUCCESS':
-      return {
-        ...state,
-        surveys: {
-          surveys: action.payload,
-          isFetching: false,
-        },
-        error: null
-      };
     case 'FETCH_SURVEY_FAILURE':
       return {
         ...state,
         surveys: {
           ...state.surveys,
-          isFetching: false,
         },
         error: action.error
       };
@@ -62,7 +49,6 @@ export function reducer(state: State = initialState, action: RootActions): State
         ...state,
         surveyToShow: {
           ...state.surveyToShow,
-          isFetching: true,
         },
       };
     case 'FETCH_SET_SURVEY_TO_SHOW_SUCCESS':
@@ -70,7 +56,6 @@ export function reducer(state: State = initialState, action: RootActions): State
         ...state,
         surveyToShow: {
           surveyToShow: state.surveys.surveys && state.surveys.surveys.filter(item => item.id === action.payload)[0],
-          isFetching: false,
         },
         error: null
       };
@@ -79,7 +64,7 @@ export function reducer(state: State = initialState, action: RootActions): State
         ...state,
         draftSurvey: {
           draftSurvey: {
-            id: '',
+            id: uuidv4(),
             title: '',
             description: ''
           },
@@ -101,7 +86,6 @@ export function reducer(state: State = initialState, action: RootActions): State
         ...state,
         surveys: {
           surveys: [...state.surveys.surveys, state.draftSurvey.draftSurvey],
-          isFetching: false,
         },
         draftSurvey: {
           draftSurvey: {
@@ -126,6 +110,65 @@ export function reducer(state: State = initialState, action: RootActions): State
         },
         error: null
       };
+    case 'FETCH_ADD_DRAFT_QUESTION_SUCCESS':
+      return {
+        ...state,
+        draftSurvey: {
+          ...state.draftSurvey,
+          draftSurvey: {
+            ...state.draftSurvey.draftSurvey,
+            draftQuestion: {
+                _id: uuidv4(),
+                type: null,
+                quiestion: "",
+                active: true,
+                // options: {
+                //   ["123"]: "preg1",
+                // }
+            }
+          },
+        },
+      };
+    case 'FETCH_UPDATE_DRAFT_QUESTION_TYPE_SUCCESS':
+       if (state.draftSurvey.draftSurvey.draftQuestion){
+        return {
+          ...state,
+          draftSurvey: {
+            ...state.draftSurvey,
+            draftSurvey: {
+              ...state.draftSurvey.draftSurvey,
+              draftQuestion: {
+                  ...state.draftSurvey.draftSurvey.draftQuestion,
+                  type: action.payload,
+              }
+            },
+          },
+        };
+      } else return state;
+    case 'FETCH_ADD_QUESTION_SUCCESS':
+      if (state.draftSurvey.draftSurvey.draftQuestion){
+        return {
+        ...state,
+        draftSurvey: {
+          ...state.draftSurvey,
+          draftSurvey: {
+            ...state.draftSurvey.draftSurvey,
+            questions: {
+              ...state.draftSurvey.draftSurvey.questions,
+              [state.draftSurvey.draftSurvey.draftQuestion._id]: state.draftSurvey.draftSurvey.draftQuestion,
+            },
+            draftQuestion: {
+                _id: '',
+                type: null,
+                quiestion: '',
+                active: false
+            }
+          },
+        },
+      };
+      } else
+      return state;
+
     default:
       return state;
   }

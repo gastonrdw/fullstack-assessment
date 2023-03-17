@@ -36,14 +36,12 @@ export default function Home() {
   }
 
   const surveys  = useSelector(store => store.Surveys);
-  useEffect(() => {
-    dispatch(getSurveys());
-  }, [getSurveys]);
-
   const surveyToShow  = useSelector(store => store.Surveys.surveyToShow);
   const draftSurvey  = useSelector(store => store.Surveys.draftSurvey);
 
-  console.log('draftSurvey', draftSurvey);
+  // useEffect(() => {
+  //   dispatch(getSurveys());
+  // }, [getSurveys]);
 
   return (
     <>

@@ -1,6 +1,5 @@
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
-import { ISurvey } from '../../interfaces/survey';
 
 const fetchSetSurveyToShowRequest = () =>
   ({
