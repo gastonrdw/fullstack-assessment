@@ -2,7 +2,7 @@ import {ISurvey} from "@/interfaces/survey";
 import { useSelector } from '../state/store';
 import React from "react";
 import { useDispatch } from 'react-redux';
-import { addDraftQuestion, updateDraftQuestionType, addQuestion } from '../state/actions/question';
+import { addDraftQuestion, updateDraftQuestionType, addQuestion, updateDraftQuestion } from '../state/actions/question';
 
 const Question = ({active} : {active: boolean}) => {
   const dispatch = useDispatch();
@@ -11,12 +11,16 @@ const Question = ({active} : {active: boolean}) => {
     dispatch(addDraftQuestion());
   }
 
-  const saveOptionHandler = () => {
+  const saveQuestionHandler = () => {
     dispatch(addQuestion());
   }
 
   const selectQuestionType = (type: string) => {
     dispatch(updateDraftQuestionType(type));
+  }
+
+  const updateQuestion = (question: string) => {
+    dispatch(updateDraftQuestion(question));
   }
 
   const draftQuestion  = useSelector(store => store.Surveys.draftSurvey.draftSurvey.draftQuestion);
@@ -41,6 +45,7 @@ const Question = ({active} : {active: boolean}) => {
         <div className="flex flex-col w-full mb-4">
                 <label>Pregunta</label>
                 <input
+                  onChange={(e)=> updateQuestion(e.target.value)}
                   className="p-2.5 rounded-[4px]"
                   type="text"
                   placeholder="Pregunta"
@@ -76,7 +81,7 @@ const Question = ({active} : {active: boolean}) => {
         }
 
         <button
-          onClick={() => saveOptionHandler()}
+          onClick={() => saveQuestionHandler()}
           className="p-[8px] bg-[#E8E8E8] rounded-[8px] flex items-center">
             <i className="fa-solid fa-circle-plus text-4 text-purple-400 bg-white rounded-[50%]"></i>
             <span
@@ -86,8 +91,9 @@ const Question = ({active} : {active: boolean}) => {
         </button>
         </div>
       }
-      <button
-        disabled={!active}
+      {
+        active &&
+        <button
         onClick={() => addOptionHandler()}
         className="p-[8px] bg-[#E8E8E8] mt-[20px] mr-auto rounded-[8px] flex items-center"
       >
@@ -99,6 +105,8 @@ const Question = ({active} : {active: boolean}) => {
           >Agregar Pregunta
         </span>
       </button>
+      }
+
     </>
   );
 }

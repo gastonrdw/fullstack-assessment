@@ -2,9 +2,7 @@ export interface ISurvey {
   id: string;
   title: string | undefined;
   description: string | undefined;
-  questions?: {
-    [questionId: string]: IQuestion;
-  };
+  questions: IQuestion[];
   draftQuestion?: IQuestion;
 }
 

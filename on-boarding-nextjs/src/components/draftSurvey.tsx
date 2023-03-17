@@ -3,7 +3,6 @@ import {State} from "@/state/reducers/survey";
 import Question from "./question";
 
 const DraftSuverys = ({ draftSurvey, updateSuvery, createSurvey, cleanDraftSurvey }: {draftSurvey: State["draftSurvey"], updateSuvery: Function, createSurvey: Function, cleanDraftSurvey: Function }) => {
-  console.log('draftSurvey', draftSurvey);
   return (
       <div className="w-1/2 flex flex-col shadow">
         <div

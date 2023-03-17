@@ -1,6 +1,7 @@
 import { RootActions } from '../combineActions';
 import { ISurvey } from '../../interfaces/survey';
 import { v4 as uuidv4 } from 'uuid';
+import Question from '@/components/question';
 
 export type State = {
   surveys:{
@@ -25,6 +26,7 @@ export const initialState: State = {
       id: '',
       title: '',
       description: '',
+      questions: [],
     },
     active: false,
   },
@@ -66,7 +68,8 @@ export function reducer(state: State = initialState, action: RootActions): State
           draftSurvey: {
             id: uuidv4(),
             title: '',
-            description: ''
+            description: '',
+            questions: [],
           },
           active: true,
         },
@@ -91,7 +94,8 @@ export function reducer(state: State = initialState, action: RootActions): State
           draftSurvey: {
             id: '',
             title: '',
-            description: ''
+            description: '',
+            questions: [],
           },
           active: false,
         },
@@ -104,7 +108,8 @@ export function reducer(state: State = initialState, action: RootActions): State
           draftSurvey: {
             id: '',
             title: '',
-            description: ''
+            description: '',
+            questions: [],
           },
           active: false,
         },
@@ -120,7 +125,7 @@ export function reducer(state: State = initialState, action: RootActions): State
             draftQuestion: {
                 _id: uuidv4(),
                 type: null,
-                quiestion: "",
+                quiestion: '',
                 active: true,
                 // options: {
                 //   ["123"]: "preg1",
@@ -145,6 +150,22 @@ export function reducer(state: State = initialState, action: RootActions): State
           },
         };
       } else return state;
+     case 'FETCH_UPDATE_DRAFT_QUESTION_SUCCESS':
+       if (state.draftSurvey.draftSurvey.draftQuestion){
+        return {
+          ...state,
+          draftSurvey: {
+            ...state.draftSurvey,
+            draftSurvey: {
+              ...state.draftSurvey.draftSurvey,
+              draftQuestion: {
+                  ...state.draftSurvey.draftSurvey.draftQuestion,
+                  quiestion: action.payload,
+              }
+            },
+          },
+        };
+      } else return state;
     case 'FETCH_ADD_QUESTION_SUCCESS':
       if (state.draftSurvey.draftSurvey.draftQuestion){
         return {
@@ -153,10 +174,7 @@ export function reducer(state: State = initialState, action: RootActions): State
           ...state.draftSurvey,
           draftSurvey: {
             ...state.draftSurvey.draftSurvey,
-            questions: {
-              ...state.draftSurvey.draftSurvey.questions,
-              [state.draftSurvey.draftSurvey.draftQuestion._id]: state.draftSurvey.draftSurvey.draftQuestion,
-            },
+            questions: [...state.draftSurvey.draftSurvey.questions, state.draftSurvey.draftSurvey.draftQuestion],
             draftQuestion: {
                 _id: '',
                 type: null,
